@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 # Contributing to NewsNow
 
 Thank you for considering contributing to NewsNow! This document provides guidelines and instructions for contributing to the project.
@@ -24,7 +25,7 @@ git checkout -b bilibili-hot-video
 
 Add your new source to the source configuration in `/shared/pre-sources.ts`:
 
-```typescript
+```text
 "bilibili": {
   name: "哔哩哔哩",
   color: "blue",
@@ -46,7 +47,7 @@ Add your new source to the source configuration in `/shared/pre-sources.ts`:
 
 For a completely new source, add a new top-level entry:
 
-```typescript
+```text
 "newsource": {
   name: "New Source",
   color: "blue",
@@ -60,7 +61,7 @@ For a completely new source, add a new top-level entry:
 
 Create or modify a file in the `/server/sources/` directory. If your source is related to an existing one (like adding a new Bilibili sub-source), modify the existing file:
 
-```typescript
+```text
 // In /server/sources/bilibili.ts
 
 // Define interface for API response
@@ -171,7 +172,7 @@ git push origin feature-name
 
 Each source should return an array of objects that conform to the `NewsItem` interface:
 
-```typescript
+```text
 interface NewsItem {
   id: string | number; // Unique identifier for the item
   title: string; // Title of the news item

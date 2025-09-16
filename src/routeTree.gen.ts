@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as CColumnImport } from './routes/c.$column'
+import { Route as AssistantImport } from './routes/assistant'
 
 // Create/Update Routes
 
@@ -25,6 +26,12 @@ const IndexRoute = IndexImport.update({
 const CColumnRoute = CColumnImport.update({
   id: '/c/$column',
   path: '/c/$column',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AssistantRoute = AssistantImport.update({
+  id: '/assistant',
+  path: '/assistant',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CColumnImport
       parentRoute: typeof rootRoute
     }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +68,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/c/$column': typeof CColumnRoute
+  '/assistant': typeof AssistantRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/c/$column': typeof CColumnRoute
+  '/assistant': typeof AssistantRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/c/$column': typeof CColumnRoute
+  '/assistant': typeof AssistantRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/c/$column'
+  fullPaths: '/' | '/c/$column' | '/assistant'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/c/$column'
-  id: '__root__' | '/' | '/c/$column'
+  to: '/' | '/c/$column' | '/assistant'
+  id: '__root__' | '/' | '/c/$column' | '/assistant'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CColumnRoute: typeof CColumnRoute
+  AssistantRoute: typeof AssistantRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CColumnRoute: CColumnRoute,
+  AssistantRoute: AssistantRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +116,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/c/$column"
+        "/c/$column",
+        "/assistant"
       ]
     },
     "/": {
@@ -105,6 +125,9 @@ export const routeTree = rootRoute
     },
     "/c/$column": {
       "filePath": "c.$column.tsx"
+    },
+    "/assistant": {
+      "filePath": "assistant.tsx"
     }
   }
 }
