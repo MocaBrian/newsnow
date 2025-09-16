@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router"
 import dayjs from "dayjs"
 import { type ChangeEventHandler, useMemo, useState } from "react"
+import { DatabaseManager } from "~/components/assistant/database-manager"
 import { PostEditor } from "~/components/assistant/post-editor"
 import { bannedMatchers, finalChecklistItems, focusAreaOptions, priorityFocusIds } from "~/components/assistant/constraints"
-import type { ExistingPost, PostDraft, PostMetrics } from "~/components/assistant/utils"
+import type { DatabaseEntryDraft, ExistingPost, PostDraft, PostMetrics } from "~/components/assistant/utils"
 import {
   buildPostPreview,
   computeSimilarity,
@@ -176,6 +177,22 @@ function AssistantPlanner() {
     setExistingPosts(parseFinalPostDatabase(value))
   }
 
+  const handleAddDatabaseEntry = (entry: DatabaseEntryDraft) => {
+    const lines = [
+      `Title: ${entry.title}`,
+      `Keywords: ${entry.keywords}`,
+      `Data Points: ${entry.dataPoints}`,
+      `Publish Date: ${entry.publishDate}`,
+    ]
+    setDatabaseText((current) => {
+      const trimmed = current.trim()
+      const snippet = lines.join("\n")
+      const appended = trimmed ? `${trimmed}\n\n${snippet}` : snippet
+      setExistingPosts(parseFinalPostDatabase(appended))
+      return `${appended}\n`
+    })
+  }
+
   const updatePostField = (postId: number, field: keyof PostDraft, value: PostDraft[keyof PostDraft]) => {
     setPosts(current => current.map(post => (post.id === postId ? { ...post, [field]: value } : post)))
   }
@@ -278,6 +295,7 @@ function AssistantPlanner() {
           placeholder="Paste Final_Post.md content here to enable conflict checks."
           className="min-h-40 w-full rounded-xl border border-neutral-300 bg-transparent px-3 py-3 text-sm focus:(outline-none border-primary)"
         />
+        <DatabaseManager entries={existingPosts} onAdd={handleAddDatabaseEntry} />
       </section>
 
       <section className="rounded-2xl border border-primary/20 bg-base bg-op-70! p-6 space-y-4">
