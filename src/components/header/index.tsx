@@ -63,6 +63,12 @@ export function Header() {
         </span>
       </span>
       <span className="justify-self-end flex gap-2 items-center text-xl text-primary-600 dark:text-primary">
+        <Link
+          to="/assistant"
+          className="btn text-sm px-3 py-1 rounded-full border border-primary/40 text-primary hover:(bg-primary/10)"
+        >
+          Planner
+        </Link>
         <GoTop />
         <Refresh />
         <Menu />
