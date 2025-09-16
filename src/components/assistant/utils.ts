@@ -4,8 +4,17 @@ export interface ExistingPost {
   id: number
   title: string
   keywords: string[]
+  dataPoints: string
+  publishDate: string
   content: string
   raw: string
+}
+
+export interface DatabaseEntryDraft {
+  title: string
+  keywords: string
+  dataPoints: string
+  publishDate: string
 }
 
 export interface SourceEntry {
@@ -144,12 +153,16 @@ export function parseFinalPostDatabase(input: string): ExistingPost[] {
   return sections.map((section, index) => {
     const titleMatch = section.match(/Title:\s*(.+)/)
     const keywordsMatch = section.match(/Keywords?:\s*(.+)/i)
+    const dataPointsMatch = section.match(/Data Points?:\s*(.+)/i)
+    const publishDateMatch = section.match(/Publish Date:\s*(.+)/i)
     return {
       id: index + 1,
       title: titleMatch ? titleMatch[1].trim() : `Untitled ${index + 1}`,
       keywords: keywordsMatch
         ? keywordsMatch[1].split(/[，,]/).map(k => k.trim().toLowerCase()).filter(Boolean)
         : [],
+      dataPoints: dataPointsMatch ? dataPointsMatch[1].trim() : "",
+      publishDate: publishDateMatch ? publishDateMatch[1].trim() : "",
       content: section.trim(),
       raw: section,
     }
